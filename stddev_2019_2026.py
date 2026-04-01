@@ -206,20 +206,21 @@ def plot_combined_comparison(df, output_file=None):
     }
     
     # Create figure with 2 subplots stacked vertically
-    fig, (ax_top, ax_bottom) = plt.subplots(2, 1, figsize=(16, 12), sharex=True)
+    fig, (ax_top, ax_bottom) = plt.subplots(2, 1, figsize=(18, 14), sharex=True)
     
     # Top subplot: Overall trend with all data
     ax_top.plot(df['datetime'], df['median_stddev_arcsec'], 
-                marker='o', linestyle='-', linewidth=2.5, markersize=5, 
+                marker='o', linestyle='-', linewidth=3, markersize=8, 
                 color='#2E86AB', label='All Instruments - Median', zorder=3)
     ax_top.fill_between(df['datetime'], df['median_stddev_arcsec'], 
                         alpha=0.2, color='#2E86AB', zorder=2)
     
-    ax_top.set_ylabel('Std Dev (arcsec)', fontsize=12, fontweight='bold')
+    ax_top.set_ylabel('Std Dev (arcsec)', fontsize=16, fontweight='bold')
     ax_top.set_title('Tracking Stability Trends (2019-2026)\nOverall Mean of All Instruments', 
-                     fontsize=13, fontweight='bold', pad=15)
+                     fontsize=18, fontweight='bold', pad=20)
     ax_top.grid(True, alpha=0.3, linestyle='--', linewidth=0.5)
-    ax_top.legend(loc='best', fontsize=10, framealpha=0.95)
+    ax_top.legend(loc='best', fontsize=13, framealpha=0.95)
+    ax_top.tick_params(axis='both', which='major', labelsize=13)
     
     # Bottom subplot: Individual instruments with different colors
     target_instruments = ['blue', 'binospec', 'hecto', 'mmirs']
@@ -229,17 +230,16 @@ def plot_combined_comparison(df, output_file=None):
         if len(df_inst) > 0:
             color = instrument_colors.get(instrument, '#000000')
             ax_bottom.plot(df_inst['datetime'], df_inst['median_stddev_arcsec'], 
-                          marker='o', linestyle='-', linewidth=2, markersize=5, 
+                          marker='o', linestyle='-', linewidth=3, markersize=8, 
                           color=color, label=instrument.upper(), zorder=2)
-            ax_bottom.fill_between(df_inst['datetime'], df_inst['median_stddev_arcsec'], 
-                                  alpha=0.15, color=color, zorder=1)
     
-    ax_bottom.set_xlabel('Date', fontsize=12, fontweight='bold')
-    ax_bottom.set_ylabel('Std Dev (arcsec)', fontsize=12, fontweight='bold')
+    ax_bottom.set_xlabel('Date', fontsize=16, fontweight='bold')
+    ax_bottom.set_ylabel('Std Dev (arcsec)', fontsize=16, fontweight='bold')
     ax_bottom.set_title('Instrument Comparison: BLUE, BINOSPEC, HECTO, MMIRS', 
-                        fontsize=13, fontweight='bold', pad=15)
+                        fontsize=18, fontweight='bold', pad=20)
     ax_bottom.grid(True, alpha=0.3, linestyle='--', linewidth=0.5)
-    ax_bottom.legend(loc='best', fontsize=10, framealpha=0.95, ncol=4)
+    ax_bottom.legend(loc='best', fontsize=13, framealpha=0.95, ncol=4)
+    ax_bottom.tick_params(axis='both', which='major', labelsize=13)
     
     # Format x-axis for date display
     fig.autofmt_xdate(rotation=45, ha='right')
