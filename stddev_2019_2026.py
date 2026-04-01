@@ -17,6 +17,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from datetime import datetime
+from scipy import stats as scipy_stats
 import warnings
 
 # Suppress warnings
@@ -194,8 +195,8 @@ def plot_by_instrument(df, output_file=None):
 
 def plot_combined_comparison(df, output_file=None):
     """Create figure with two subplots:
-    Top: Overall tracking stability trends (2019-2026)
-    Bottom: Combined blue, binospec, hecto, mmirs data with different colors
+    Top: Overall tracking stability trends (2019-2026) with linear regression
+    Bottom: Combined blue, binospec, hecto, mmirs data with linear regressions for each
     """
     # Define instrument colors
     instrument_colors = {
@@ -208,12 +209,35 @@ def plot_combined_comparison(df, output_file=None):
     # Create figure with 2 subplots stacked vertically
     fig, (ax_top, ax_bottom) = plt.subplots(2, 1, figsize=(18, 14), sharex=True)
     
-    # Top subplot: Overall trend with all data
-    ax_top.plot(df['datetime'], df['median_stddev_arcsec'], 
+    # Convert datetime to numeric days for regression
+    df_copy = df.copy()
+    df_copy['time_numeric'] = (df_copy['datetime'] - df_copy['datetime'].min()).dt.days
+    
+    # ===== TOP SUBPLOT: Overall trend with linear regression =====
+    ax_top.plot(df_copy['datetime'], df_copy['median_stddev_arcsec'], 
                 marker='o', linestyle='-', linewidth=3, markersize=8, 
                 color='#2E86AB', label='All Instruments - Median', zorder=3)
-    ax_top.fill_between(df['datetime'], df['median_stddev_arcsec'], 
+    ax_top.fill_between(df_copy['datetime'], df_copy['median_stddev_arcsec'], 
                         alpha=0.2, color='#2E86AB', zorder=2)
+    
+    # Calculate linear regression for overall data
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', message='.*One or more sample arguments is too small.*')
+        slope_overall, intercept_overall, r_value_overall, p_value_overall, std_err_overall = scipy_stats.linregress(
+            df_copy['time_numeric'], df_copy['median_stddev_arcsec'])
+    
+    # Plot regression line for overall data
+    x_reg = np.array([df_copy['time_numeric'].min(), df_copy['time_numeric'].max()])
+    y_reg_overall = slope_overall * x_reg + intercept_overall
+    datetime_reg = df_copy['datetime'].min() + pd.to_timedelta(x_reg, unit='D')
+    ax_top.plot(datetime_reg, y_reg_overall, '--', linewidth=2.5, color='red', 
+                label=f'Regression (R²={r_value_overall**2:.4f})', zorder=4, alpha=0.8)
+    
+    # Add regression equation to top subplot
+    equation_overall = f'y = {slope_overall:.6f}x + {intercept_overall:.4f}'
+    ax_top.text(0.02, 0.95, equation_overall, transform=ax_top.transAxes, 
+                fontsize=12, verticalalignment='top', bbox=dict(boxstyle='round', 
+                facecolor='wheat', alpha=0.8), family='monospace')
     
     ax_top.set_ylabel('Std Dev (arcsec)', fontsize=16, fontweight='bold')
     ax_top.set_title('Tracking Stability Trends (2019-2026)\nOverall Mean of All Instruments', 
@@ -222,16 +246,39 @@ def plot_combined_comparison(df, output_file=None):
     ax_top.legend(loc='best', fontsize=13, framealpha=0.95)
     ax_top.tick_params(axis='both', which='major', labelsize=13)
     
-    # Bottom subplot: Individual instruments with different colors
+    # ===== BOTTOM SUBPLOT: Individual instruments with linear regressions =====
     target_instruments = ['blue', 'binospec', 'hecto', 'mmirs']
+    equations_bottom = []
     
     for instrument in target_instruments:
-        df_inst = df[df['instrument'].str.lower() == instrument]
+        df_inst = df_copy[df_copy['instrument'].str.lower() == instrument]
         if len(df_inst) > 0:
             color = instrument_colors.get(instrument, '#000000')
             ax_bottom.plot(df_inst['datetime'], df_inst['median_stddev_arcsec'], 
                           marker='o', linestyle='-', linewidth=3, markersize=8, 
                           color=color, label=instrument.upper(), zorder=2)
+            
+            # Calculate linear regression for this instrument
+            with warnings.catch_warnings():
+                warnings.filterwarnings('ignore', message='.*One or more sample arguments is too small.*')
+                slope, intercept, r_value, p_value, std_err = scipy_stats.linregress(
+                    df_inst['time_numeric'], df_inst['median_stddev_arcsec'])
+            
+            # Plot regression line for this instrument
+            x_reg_inst = np.array([df_inst['time_numeric'].min(), df_inst['time_numeric'].max()])
+            y_reg = slope * x_reg_inst + intercept
+            datetime_reg_inst = df_inst['datetime'].min() + pd.to_timedelta(x_reg_inst, unit='D')
+            ax_bottom.plot(datetime_reg_inst, y_reg, '--', linewidth=2, color=color, 
+                          alpha=0.7, zorder=1)
+            
+            # Store equation for display
+            equations_bottom.append(f'{instrument.upper()}: y = {slope:.6f}x + {intercept:.4f} (R²={r_value**2:.4f})')
+    
+    # Add all regression equations to bottom subplot
+    equations_text = '\n'.join(equations_bottom)
+    ax_bottom.text(0.02, 0.95, equations_text, transform=ax_bottom.transAxes, 
+                   fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', 
+                   facecolor='lightblue', alpha=0.8), family='monospace')
     
     ax_bottom.set_xlabel('Date', fontsize=16, fontweight='bold')
     ax_bottom.set_ylabel('Std Dev (arcsec)', fontsize=16, fontweight='bold')
