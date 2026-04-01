@@ -1,1 +1,2 @@
 # spie2026_fig3_stddev_trends
+# spie2026_fig3_monthly_spie_all
