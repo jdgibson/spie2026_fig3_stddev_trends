@@ -69,9 +69,14 @@ def load_json_data(json_dir='./notebooks/results'):
 
 
 def extract_data_points(all_data):
+<<<<<<< HEAD
     """Extract mean and median standard deviations with timestamps and 1-sigma errors from JSON data."""
     data_points = []
     excluded_instruments = ['red', 'spol']  # Exclude these instruments
+=======
+    """Extract mean and median standard deviations with timestamps from JSON data."""
+    data_points = []
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
     
     for filename, data in all_data.items():
         try:
@@ -81,12 +86,15 @@ def extract_data_points(all_data):
             run_start = metadata.get('run_start_datetime')
             mean_stddev = stats.get('mean_stddev_arcsec')
             median_stddev = stats.get('median_stddev_arcsec', mean_stddev)  # Use median if available, fall back to mean
+<<<<<<< HEAD
             std_stddev = stats.get('std_stddev_arcsec', 0)  # Extract 1-sigma error
             instrument = metadata.get('instrument', 'UNKNOWN')
             
             # Skip excluded instruments
             if instrument.lower() in excluded_instruments:
                 continue
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
             
             if run_start and mean_stddev is not None:
                 data_points.append({
@@ -94,8 +102,12 @@ def extract_data_points(all_data):
                     'datetime': pd.to_datetime(run_start),
                     'mean_stddev_arcsec': mean_stddev,
                     'median_stddev_arcsec': median_stddev if median_stddev is not None else mean_stddev,
+<<<<<<< HEAD
                     'std_stddev_arcsec': std_stddev,
                     'instrument': instrument
+=======
+                    'instrument': metadata.get('instrument', 'UNKNOWN')
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
                 })
         except Exception as e:
             print(f"  Warning: Error extracting data from {filename}: {e}")
@@ -222,9 +234,12 @@ def plot_combined_comparison(df, output_file=None):
     df_copy['time_numeric'] = (df_copy['datetime'] - df_copy['datetime'].min()).dt.days
     
     # ===== TOP SUBPLOT: Overall trend with linear regression =====
+<<<<<<< HEAD
     ax_top.errorbar(df_copy['datetime'], df_copy['median_stddev_arcsec'], 
                     yerr=df_copy['std_stddev_arcsec'], fmt='none', elinewidth=1.5, capsize=3, 
                     capthick=1, color='#2E86AB', alpha=0.4, zorder=2.5, label='1σ Error')
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
     ax_top.plot(df_copy['datetime'], df_copy['median_stddev_arcsec'], 
                 marker='o', linestyle='-', linewidth=3, markersize=8, 
                 color='#2E86AB', label='All Instruments - Median', zorder=3)
@@ -322,6 +337,7 @@ def plot_combined_comparison(df, output_file=None):
     return fig, (ax_top, ax_bottom)
 
 
+<<<<<<< HEAD
 def extract_up_down_data(all_data):
     """Extract UP vs DOWN standard deviation data with timestamps and 1-sigma errors from JSON data."""
     data_points = []
@@ -1211,6 +1227,8 @@ def print_prose_summary(df, all_data):
     print("="*80 + "\n")
 
 
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
 def print_summary_statistics(df):
     """Print summary statistics."""
     print("\n" + "="*80)
@@ -1274,12 +1292,15 @@ def main():
     # Print summary statistics
     print_summary_statistics(df)
     
+<<<<<<< HEAD
     # Print UP vs DOWN comparison
     print_up_down_comparison_summary(all_data)
     
     # Print prose narrative summary
     print_prose_summary(df, all_data)
     
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
     # Create plots
     print("\nStep 3: Generating visualizations...\n")
     print("Creating time-series plot...")
@@ -1291,6 +1312,7 @@ def main():
     print("\nCreating combined comparison plot (Overall + Target Instruments)...")
     plot_combined_comparison(df, output_file='stddev_combined_comparison_2019_2026.png')
     
+<<<<<<< HEAD
     print("\nCreating UP vs DOWN direction comparison plot...")
     plot_up_down_comparison(all_data, output_file='stddev_up_vs_down_2019_2026.png')
     
@@ -1309,6 +1331,8 @@ def main():
     print("\nCreating recent years (2024-2025) UP vs DOWN violin plot...")
     plot_violin_up_down_recent_years(all_data, output_file='stddev_violin_up_vs_down_2024_2025.png')
     
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
     print("\n" + "="*80)
     print("✓ ANALYSIS COMPLETE")
     print("="*80)
@@ -1316,12 +1340,15 @@ def main():
     print("  • stddev_timeseries_2019_2026.png")
     print("  • stddev_by_instrument_2019_2026.png")
     print("  • stddev_combined_comparison_2019_2026.png")
+<<<<<<< HEAD
     print("  • stddev_up_vs_down_2019_2026.png")
     print("  • stddev_violin_by_instrument_2019_2026.png")
     print("  • stddev_violin_up_vs_down_2019_2026.png")
     print("  • stddev_violin_by_year_and_instrument_2019_2026.png")
     print("  • stddev_violin_up_vs_down_by_year_2019_2026.png")
     print("  • stddev_violin_up_vs_down_2024_2025.png")
+=======
+>>>>>>> 77b9b6d9557c29ef13998a1ba7409e78e71766cd
     print("\n📈 Plots displayed in the VS Code interactive window above.\n")
 
 
