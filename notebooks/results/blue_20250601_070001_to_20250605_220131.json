@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "instrument": "blue",
+    "run_number": 1,
+    "run_start_datetime": "2025-06-01T07:00:01.999000",
+    "run_end_datetime": "2025-06-05T22:01:31.964000",
+    "run_duration_seconds": 399689.965,
+    "primary_metric": "Standard Deviation of Elevation Error",
+    "secondary_metric": "RMS (Root Mean Square) of Elevation Error",
+    "analysis_note": "This report emphasizes the PRIMARY METRIC (standard deviation of elevation error) to characterize pointing stability and variability. The SECONDARY METRIC (RMS elevation error) is provided for reference and historical comparison."
+  },
+  "data_quality": {
+    "original_rms_record_count": 1103339,
+    "filtered_rms_record_count": 1080063,
+    "data_retention_percent": 97.89040358402993
+  },
+  "statistics_by_direction": {
+    "BOTH": {
+      "description": "Combined statistics for all telescope directions",
+      "standard_deviation": {
+        "description": "PRIMARY METRIC: Standard Deviation of Elevation Error - Quantifies pointing stability and variability",
+        "metric_definition": "Rolling standard deviation calculated from elevation error time series",
+        "mean_stddev_arcsec": 0.09187229714035607,
+        "std_stddev_arcsec": 0.05412259456645426,
+        "min_stddev_arcsec": 0.0,
+        "max_stddev_arcsec": 1.1284853457965789,
+        "data_points": 1080063,
+        "total_change_arcsec": 0.12630987169432653,
+        "percent_change": 629.3976984622412,
+        "boxplot_stats": {
+          "q1": 0.05773395389777447,
+          "median": 0.08822678335860958,
+          "q3": 0.12104468847907533,
+          "iqr": 0.06331073458130086,
+          "lower_whisker": -0.037232147974176816,
+          "upper_whisker": 0.2160107903510266,
+          "num_outliers": 24312,
+          "outlier_percent": 2.2509798039558806
+        }
+      },
+      "elevation_error": {
+        "description": "SECONDARY METRIC: Elevation RMS Error - Raw pointing error magnitude for reference",
+        "metric_definition": "Root mean square of elevation error measurements (traditional metric)",
+        "mean_rms_arcsec": -0.6342942714691162,
+        "std_rms_arcsec": 0.935021162033081,
+        "min_rms_arcsec": -2.3059744834899902,
+        "max_rms_arcsec": 1.9188508987426758,
+        "data_points": 1080063,
+        "total_change_arcsec": 2.3569650650024414,
+        "percent_change": -199.60426330566406,
+        "boxplot_stats": {
+          "q1": -1.2250927686691284,
+          "median": -1.0560146570205688,
+          "q3": -0.7024130821228027,
+          "iqr": 0.5226796865463257,
+          "lower_whisker": -2.0091123580932617,
+          "upper_whisker": 0.08160644769668579,
+          "num_outliers": 216064,
+          "outlier_percent": 20.004758981651996
+        }
+      }
+    },
+    "UP": {
+      "description": "Statistics for upward telescope motion",
+      "standard_deviation": {
+        "description": "PRIMARY METRIC: Standard Deviation of Elevation Error (Upward) - Pointing stability during elevation increase",
+        "metric_definition": "Rolling standard deviation calculated from elevation error time series",
+        "mean_stddev_arcsec": 0.09034057000428683,
+        "std_stddev_arcsec": 0.05409154144106419,
+        "min_stddev_arcsec": 0.0,
+        "max_stddev_arcsec": 1.2170165270533067,
+        "data_points": 224360,
+        "total_change_arcsec": 0.014648987344071607,
+        "percent_change": 10.980251422564582,
+        "boxplot_stats": {
+          "q1": 0.05613143100667315,
+          "median": 0.07721986237418714,
+          "q3": 0.11255280729835125,
+          "iqr": 0.0564213762916781,
+          "lower_whisker": -0.028500633430844004,
+          "upper_whisker": 0.1971848717358684,
+          "num_outliers": 9241,
+          "outlier_percent": 4.11882688536281
+        }
+      },
+      "elevation_error": {
+        "description": "SECONDARY METRIC: Elevation RMS Error (Upward) - Raw error measurement during elevation increase",
+        "metric_definition": "Root mean square of elevation error measurements (traditional metric)",
+        "mean_rms_arcsec": 1.0450478792190552,
+        "std_rms_arcsec": 0.5555821061134338,
+        "min_rms_arcsec": -2.084969997406006,
+        "max_rms_arcsec": 1.9076130390167236,
+        "data_points": 224360,
+        "total_change_arcsec": 2.041968822479248,
+        "percent_change": -235.84136962890625,
+        "boxplot_stats": {
+          "q1": 1.0708749294281006,
+          "median": 1.1908137798309326,
+          "q3": 1.2772504091262817,
+          "iqr": 0.20637547969818115,
+          "lower_whisker": 0.7613117098808289,
+          "upper_whisker": 1.5868136882781982,
+          "num_outliers": 16955,
+          "outlier_percent": 7.55705116776609
+        }
+      }
+    },
+    "DOWN": {
+      "description": "Statistics for downward telescope motion",
+      "standard_deviation": {
+        "description": "PRIMARY METRIC: Standard Deviation of Elevation Error (Downward) - Pointing stability during elevation decrease",
+        "metric_definition": "Rolling standard deviation calculated from elevation error time series",
+        "mean_stddev_arcsec": 0.0944566339986057,
+        "std_stddev_arcsec": 0.05469590843055481,
+        "min_stddev_arcsec": 0.0,
+        "max_stddev_arcsec": 0.87118449067344,
+        "data_points": 778860,
+        "total_change_arcsec": 0.8511161186404742,
+        "percent_change": 4241.082023207312,
+        "boxplot_stats": {
+          "q1": 0.057936013007709564,
+          "median": 0.08894518016177266,
+          "q3": 0.12405326792693742,
+          "iqr": 0.06611725491922786,
+          "lower_whisker": -0.04123986937113222,
+          "upper_whisker": 0.22322915030577922,
+          "num_outliers": 17727,
+          "outlier_percent": 2.2760187967028735
+        }
+      },
+      "elevation_error": {
+        "description": "SECONDARY METRIC: Elevation RMS Error (Downward) - Raw error measurement during elevation decrease",
+        "metric_definition": "Root mean square of elevation error measurements (traditional metric)",
+        "mean_rms_arcsec": -1.0968369245529175,
+        "std_rms_arcsec": 0.22320762276649475,
+        "min_rms_arcsec": -2.3059744834899902,
+        "max_rms_arcsec": 1.4168484210968018,
+        "data_points": 778860,
+        "total_change_arcsec": 2.4464855194091797,
+        "percent_change": -207.18548583984375,
+        "boxplot_stats": {
+          "q1": -1.254670262336731,
+          "median": -1.1466232538223267,
+          "q3": -0.9542696475982666,
+          "iqr": 0.30040061473846436,
+          "lower_whisker": -1.7052712440490723,
+          "upper_whisker": -0.5036687254905701,
+          "num_outliers": 7209,
+          "outlier_percent": 0.925583545181419
+        }
+      }
+    }
+  }
+}
